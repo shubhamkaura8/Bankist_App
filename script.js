@@ -78,6 +78,11 @@ const displayMovements = function (movements) {
 
 displayMovements(account1.movements);
 
+const calcPrintBalance = function (movements) {
+  const balance = movements.reduce((accumulator, mov) => accumulator + mov, 0);
+  labelBalance.textContent = `${balance} €`;
+};
+calcPrintBalance(account1.movements);
 const createUserNames = function (accs) {
   accs.forEach(function (acc) {
     acc.username = acc.owner
