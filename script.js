@@ -70,19 +70,19 @@ const displayMovements = function (movements) {
     <div class="movements__type movements__type--${type}">${
       i + 1
     }  ${type}</div>
-    <div class="movements__value">${mov}</div>
+    <div class="movements__value">${mov}€</div>
   </div>`;
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
 };
-
 displayMovements(account1.movements);
 
-const calcPrintBalance = function (movements) {
+const calcDisplayBalance = function (movements) {
   const balance = movements.reduce((accumulator, mov) => accumulator + mov, 0);
-  labelBalance.textContent = `${balance} €`;
+  labelBalance.textContent = `${balance}€`;
 };
-calcPrintBalance(account1.movements);
+calcDisplayBalance(account1.movements);
+
 const createUserNames = function (accs) {
   accs.forEach(function (acc) {
     acc.username = acc.owner
@@ -95,6 +95,23 @@ const createUserNames = function (accs) {
 };
 createUserNames(accounts);
 
+const calcDisplaySummary = function (accs) {
+  const incomes = accs
+    .filter(acc => acc > 0)
+    .reduce((acc, curr) => acc + curr, 0);
+  labelSumIn.textContent = `${incomes}€`;
+
+  const out = accs.filter(acc => acc < 0).reduce((acc, curr) => acc + curr, 0);
+  labelSumOut.textContent = `${Math.abs(out)}€`;
+
+  const interest = accs
+    .filter(acc => acc > 0)
+    .map(acc => (acc * 1.2) / 100)
+    .filter(acc => acc > 1)
+    .reduce((accum, curr) => accum + curr, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+calcDisplaySummary(account1.movements);
 // const movementsDescriptions = account1.movements.map(
 //   (mov, i) =>
 //     `Movement ${i + 1}: You ${mov < 0 ? 'withdrew' : 'deposited'} ${Math.abs(
